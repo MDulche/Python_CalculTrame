@@ -253,11 +253,26 @@ def enteteIP(tableauEntete):
   """Analyse de l'enteteIP
 
   Args:
-      tableauEntete (_type_): _description_
+      tableauEntete (list): tableau de la tram a analyser
   """
-  #Conversion necessaire (mais un rappel du cours avant de le faire)
-  vers = tableauEntete[14][0]
-  ihl = tableauEntete[15][1]
+  print("Analyse de l enteteIP : ")
+  #Calcul du vers
+  vers = conversionHexDec(tableauEntete[14][0])
+  print("Vers : ")
+  match vers:
+    case "0":
+      print("00 - Reserve")
+    case "4":
+      print("04 - IPV4")
+    case "5":
+      print("05 - ST Datagram Mode")
+    case "6":
+      print("06 - IPV6")
+    case "15":
+      print("15 - Reserve") 
+  
+  #calcul ihl
+  ihl = conversionHexDec(tableauEntete[15][1])
 
 def enteteEthernet(tableauEntete):
   """Details l'entête Ethrnet
@@ -265,24 +280,26 @@ def enteteEthernet(tableauEntete):
   Args:
       tableauEntete (list): Tableau avec la trame a anlyser
   """
-  i = 0
-  adresseDestination = []
-  adresseSource = []
-  etherType = []
+  entete = [tableauEntete[i] for i in range(13)]
+  print("Entete Ethernet :")
+  print(entete)
 
   #Adresse Destination
+  adresseDestination = []
   print("L'adresse MAC Destination est : ")
   for i in range(0, 6):
     adresseDestination.append(tableauEntete[i])
   print(adresseDestination)
 
   #Adresse Source
+  adresseSource = []
   print("L'adresse MAC Source est : ")
   for i in range(6, 12):
     adresseSource.append(tableauEntete[i])
   print(adresseSource)
 
   #EtherType
+  etherType = []
   print("L'Ether type est : ")
   for i in range(12, 14):
     etherType.append(tableauEntete[i])
@@ -299,7 +316,7 @@ def entrerEntete():
   for i in range(len(entrer)-1):
     if entrer[i] != " " and entrer[i+1] != " ": 
       tableauEntete.append(entrer[i]+entrer[i+1])
-  print("Votre entête est : ")
+  print("Votre Trame est : ")
   print(tableauEntete)
   enteteEthernet(tableauEntete)
 
